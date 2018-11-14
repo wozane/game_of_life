@@ -3,7 +3,7 @@ require_relative 'game_of_life'
 
 describe 'Game of life' do
   let!(:board) { Board.new }
-  # let!(:cell) { Cell.new(1, 1) }
+  let!(:cell) { Cell.new(1, 1) }
 
   context 'Board' do
     subject { Board.new }
@@ -33,6 +33,11 @@ describe 'Game of life' do
       new_one.alive = true
       expect(new_one).to have_attributes(alive: true)
       expect(subject.neighbours(subject.cells_board[1][1]).count).to eq(1)
+    end
+
+    it 'checks live neighbour to the north' do
+      subject.cells_board[cell.row - 1][cell.column].alive = true
+      expect(subject.neighbours(cell).count).to eq(1)
     end
   end
 
