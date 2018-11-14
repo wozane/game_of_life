@@ -39,6 +39,41 @@ class Board
       new_cell = cells_board[cell.row - 1][cell.column]
       neighbours << new_cell if new_cell.alive?
     end
+    # south
+    if cell.row < (rows - 1)
+      new_cell = cells_board[cell.row + 1][cell.column]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # east
+    if cell.column < (columns - 1)
+      new_cell = cells_board[cell.row][cell.column + 1]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # west
+    if cell.column > 0
+      new_cell = cells_board[cell.row][cell.column - 1]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # north-east
+    if cell.row > 0 && cell.column < (columns - 1)
+      new_cell = cells_board[cell.row - 1][cell.column + 1]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # north-west
+    if cell.row > 0 && cell.column > 0
+      new_cell = cells_board[cell.row - 1][cell.column - 1]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # south-east
+    if cell.row < (rows - 1) && cell.column < (columns - 1)
+      new_cell = cells_board[cell.row + 1][cell.column + 1]
+      neighbours << new_cell if new_cell.alive?
+    end
+    # south-west
+    if cell.row < (rows - 1) && cell.column > 0
+      new_cell = cells_board[cell.row + 1][cell.column - 1]
+      neighbours << new_cell if new_cell.alive?
+    end
     neighbours
   end
 end
