@@ -15,11 +15,15 @@ class Cell
   def dead?
     !alive
   end
+
+  def die!
+    @alive = false
+  end
 end
 
 # it holds the place for the cells
 class Board
-  attr_accessor :rows, :columns, :cells_board
+  attr_accessor :rows, :columns, :cells_board, :cells
 
   def initialize(rows = 3, columns = 3)
     @rows = rows
@@ -29,12 +33,21 @@ class Board
                       Cell.new(col, row) # this can be checked in irb when creating a Board.new
                     end
                   end
+    @cells = []
+
+    cells_board.each do |row|
+      row.each do |column|
+        if column.is_a?(Cell)
+          cells << column
+        end
+      end
+    end
   end
 
   def neighbours(cell)
     neighbours = []
 
-    #north
+    # north
     if cell.row > 0
       new_cell = cells_board[cell.row - 1][cell.column]
       neighbours << new_cell if new_cell.alive?
@@ -92,5 +105,10 @@ class Round
   end
 
   def tick!
+    @board.cells.each do |cell|
+      if cell.alive? && board.neighbours(cell).count < 2
+        cell.die!
+      end
+    end
   end
 end
