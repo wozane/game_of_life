@@ -76,7 +76,7 @@ describe 'Game of life' do
     end
   end
 
-  context 'Rule #1' do
+  context 'Rules' do
     let!(:round) { Round.new }
 
     it 'Cell dies if there is less than 2 neighbours' do
@@ -87,8 +87,24 @@ describe 'Game of life' do
       expect(first_round.board.cells_board[1][1]).to have_attributes(alive: false)
     end
 
-    it 'Cell lives if there are 2 neighours' do
-      game = Round.new(board, )
+    it 'Cell lives if there are 2 neighbours' do
+      game = Round.new(board, [[0, 1], [1, 1], [2, 1]])
+      game.tick!
+      expect(game.board.cells_board[1][1]).to have_attributes(alive: true)
+    end
+
+    it 'Cell lives with 2 or 3 neighbours' do
+      game = Round.new(board, [[0, 0], [0, 1], [1, 1], [2, 1]])
+      game.tick!
+      expect(game.board.cells_board[1][1]).to have_attributes(alive: true)
+    end
+
+    it 'Cell dies with more than 3 neighbours' do
+      game = Round.new(board, [[0, 0], [0, 1], [1, 0], [2, 1], [2, 2]])
+      game.tick!
+      expect(game.board.neighbours(cell).count).to eq(4)
+      expect(game.board.cells_board[1][1]).to have_attributes(alive: false)
+      expect(game.board.cells_board[0][0]).to have_attributes(alive: true )
     end
   end
 end

@@ -105,8 +105,13 @@ class Round
   end
 
   def tick!
+    dead_cells = []
+    alive_cells = []
     @board.cells.each do |cell|
       if cell.alive? && board.neighbours(cell).count < 2
+        cell.die!
+      end
+      if cell.alive? && board.neighbours(cell).count > 3
         cell.die!
       end
     end
